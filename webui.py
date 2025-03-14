@@ -745,46 +745,46 @@ def create_ui(config, theme_name="Ocean"):
             )
 
         with gr.Tabs() as tabs:
-            with gr.TabItem("⚙️ Agent Settings", id=1):
-                with gr.Group():
-                    agent_type = gr.Radio(
-                        ["org", "custom"],
-                        label="Agent Type",
-                        value=config['agent_type'],
-                        info="Select the type of agent to use",
-                    )
-                    with gr.Column():
-                        max_steps = gr.Slider(
-                            minimum=1,
-                            maximum=200,
-                            value=config['max_steps'],
-                            step=1,
-                            label="Max Run Steps",
-                            info="Maximum number of steps the agent will take",
-                        )
-                        max_actions_per_step = gr.Slider(
-                            minimum=1,
-                            maximum=20,
-                            value=config['max_actions_per_step'],
-                            step=1,
-                            label="Max Actions per Step",
-                            info="Maximum number of actions the agent will take per step",
-                        )
-                    with gr.Column():
-                        use_vision = gr.Checkbox(
-                            label="Use Vision",
-                            value=config['use_vision'],
-                            info="Enable visual processing capabilities",
-                        )
-                        tool_calling_method = gr.Dropdown(
-                            label="Tool Calling Method",
-                            value=config['tool_calling_method'],
-                            interactive=True,
-                            allow_custom_value=True,  # Allow users to input custom model names
-                            choices=["auto", "json_schema", "function_calling"],
-                            info="Tool Calls Funtion Name",
-                            visible=False
-                        )
+            # with gr.TabItem("⚙️ Agent Settings", id=1):
+            #     with gr.Group():
+            #         agent_type = gr.Radio(
+            #             ["org", "custom"],
+            #             label="Agent Type",
+            #             value=config['agent_type'],
+            #             info="Select the type of agent to use",
+            #         )
+            #         with gr.Column():
+            #             max_steps = gr.Slider(
+            #                 minimum=1,
+            #                 maximum=200,
+            #                 value=config['max_steps'],
+            #                 step=1,
+            #                 label="Max Run Steps",
+            #                 info="Maximum number of steps the agent will take",
+            #             )
+            #             max_actions_per_step = gr.Slider(
+            #                 minimum=1,
+            #                 maximum=20,
+            #                 value=config['max_actions_per_step'],
+            #                 step=1,
+            #                 label="Max Actions per Step",
+            #                 info="Maximum number of actions the agent will take per step",
+            #             )
+            #         with gr.Column():
+            #             use_vision = gr.Checkbox(
+            #                 label="Use Vision",
+            #                 value=config['use_vision'],
+            #                 info="Enable visual processing capabilities",
+            #             )
+            #             tool_calling_method = gr.Dropdown(
+            #                 label="Tool Calling Method",
+            #                 value=config['tool_calling_method'],
+            #                 interactive=True,
+            #                 allow_custom_value=True,  # Allow users to input custom model names
+            #                 choices=["auto", "json_schema", "function_calling"],
+            #                 info="Tool Calls Funtion Name",
+            #                 visible=False
+            #             )
 
             with gr.TabItem("🔧 LLM Configuration", id=2):
                 with gr.Group():
@@ -796,7 +796,7 @@ def create_ui(config, theme_name="Ocean"):
                     )
                     llm_model_name = gr.Dropdown(
                         label="Model Name",
-                        choices=utils.model_names['openai'],
+                        choices=utils.model_names['anthropic'],
                         value=config['llm_model_name'],
                         interactive=True,
                         allow_custom_value=True,  # Allow users to input custom model names
@@ -811,26 +811,26 @@ def create_ui(config, theme_name="Ocean"):
                         info="Controls max context length model needs to handle (less = faster)",
                         visible=config['llm_provider'] == "ollama"
                     )
-                    llm_temperature = gr.Slider(
-                        minimum=0.0,
-                        maximum=2.0,
-                        value=config['llm_temperature'],
-                        step=0.1,
-                        label="Temperature",
-                        info="Controls randomness in model outputs"
-                    )
-                    with gr.Row():
-                        llm_base_url = gr.Textbox(
-                            label="Base URL",
-                            value=config['llm_base_url'],
-                            info="API endpoint URL (if required)"
-                        )
-                        llm_api_key = gr.Textbox(
-                            label="API Key",
-                            type="password",
-                            value=config['llm_api_key'],
-                            info="Your API key (leave blank to use .env)"
-                        )
+                    # llm_temperature = gr.Slider(
+                    #     minimum=0.0,
+                    #     maximum=2.0,
+                    #     value=config['llm_temperature'],
+                    #     step=0.1,
+                    #     label="Temperature",
+                    #     info="Controls randomness in model outputs"
+                    # )
+                    # with gr.Row():
+                    #     llm_base_url = gr.Textbox(
+                    #         label="Base URL",
+                    #         value=config['llm_base_url'],
+                    #         info="API endpoint URL (if required)"
+                    #     )
+                    #     llm_api_key = gr.Textbox(
+                    #         label="API Key",
+                    #         type="password",
+                    #         value=config['llm_api_key'],
+                    #         info="Your API key (leave blank to use .env)"
+                    #     )
 
             # Change event to update context length slider
             def update_llm_num_ctx_visibility(llm_provider):
@@ -843,87 +843,87 @@ def create_ui(config, theme_name="Ocean"):
                 outputs=llm_num_ctx
             )
 
-            with gr.TabItem("🌐 Browser Settings", id=3):
-                with gr.Group():
-                    with gr.Row():
-                        use_own_browser = gr.Checkbox(
-                            label="Use Own Browser",
-                            value=config['use_own_browser'],
-                            info="Use your existing browser instance",
-                        )
-                        keep_browser_open = gr.Checkbox(
-                            label="Keep Browser Open",
-                            value=config['keep_browser_open'],
-                            info="Keep Browser Open between Tasks",
-                        )
-                        headless = gr.Checkbox(
-                            label="Headless Mode",
-                            value=config['headless'],
-                            info="Run browser without GUI",
-                        )
-                        disable_security = gr.Checkbox(
-                            label="Disable Security",
-                            value=config['disable_security'],
-                            info="Disable browser security features",
-                        )
-                        enable_recording = gr.Checkbox(
-                            label="Enable Recording",
-                            value=config['enable_recording'],
-                            info="Enable saving browser recordings",
-                        )
+            # with gr.TabItem("🌐 Browser Settings", id=3):
+            #     with gr.Group():
+            #         with gr.Row():
+            #             use_own_browser = gr.Checkbox(
+            #                 label="Use Own Browser",
+            #                 value=config['use_own_browser'],
+            #                 info="Use your existing browser instance",
+            #             )
+            #             keep_browser_open = gr.Checkbox(
+            #                 label="Keep Browser Open",
+            #                 value=config['keep_browser_open'],
+            #                 info="Keep Browser Open between Tasks",
+            #             )
+            #             headless = gr.Checkbox(
+            #                 label="Headless Mode",
+            #                 value=config['headless'],
+            #                 info="Run browser without GUI",
+            #             )
+            #             disable_security = gr.Checkbox(
+            #                 label="Disable Security",
+            #                 value=config['disable_security'],
+            #                 info="Disable browser security features",
+            #             )
+            #             enable_recording = gr.Checkbox(
+            #                 label="Enable Recording",
+            #                 value=config['enable_recording'],
+            #                 info="Enable saving browser recordings",
+            #             )
 
-                    with gr.Row():
-                        window_w = gr.Number(
-                            label="Window Width",
-                            value=config['window_w'],
-                            info="Browser window width",
-                        )
-                        window_h = gr.Number(
-                            label="Window Height",
-                            value=config['window_h'],
-                            info="Browser window height",
-                        )
+            #         with gr.Row():
+            #             window_w = gr.Number(
+            #                 label="Window Width",
+            #                 value=config['window_w'],
+            #                 info="Browser window width",
+            #             )
+            #             window_h = gr.Number(
+            #                 label="Window Height",
+            #                 value=config['window_h'],
+            #                 info="Browser window height",
+            #             )
 
 
-                    save_recording_path = gr.Textbox(
-                        label="Recording Path",
-                        placeholder="e.g. ./tmp/record_videos",
-                        value=config['save_recording_path'],
-                        info="Path to save browser recordings",
-                        interactive=True,  # Allow editing only if recording is enabled
-                    )
+            #         save_recording_path = gr.Textbox(
+            #             label="Recording Path",
+            #             placeholder="e.g. ./tmp/record_videos",
+            #             value=config['save_recording_path'],
+            #             info="Path to save browser recordings",
+            #             interactive=True,  # Allow editing only if recording is enabled
+            #         )
 
-                    chrome_cdp = gr.Textbox(
-                        label="CDP URL",
-                        placeholder="http://localhost:9222",
-                        value="",
-                        info="CDP for google remote debugging",
-                        interactive=True,  # Allow editing only if recording is enabled
-                    )
+            #         chrome_cdp = gr.Textbox(
+            #             label="CDP URL",
+            #             placeholder="http://localhost:9222",
+            #             value="",
+            #             info="CDP for google remote debugging",
+            #             interactive=True,  # Allow editing only if recording is enabled
+            #         )
 
-                    save_recording_path = gr.Textbox(
-                        label="Recording Path",
-                        placeholder="e.g. ./tmp/record_videos",
-                        value=config['save_recording_path'],
-                        info="Path to save browser recordings",
-                        interactive=True,  # Allow editing only if recording is enabled
-                    )
+            #         save_recording_path = gr.Textbox(
+            #             label="Recording Path",
+            #             placeholder="e.g. ./tmp/record_videos",
+            #             value=config['save_recording_path'],
+            #             info="Path to save browser recordings",
+            #             interactive=True,  # Allow editing only if recording is enabled
+            #         )
 
-                    save_trace_path = gr.Textbox(
-                        label="Trace Path",
-                        placeholder="e.g. ./tmp/traces",
-                        value=config['save_trace_path'],
-                        info="Path to save Agent traces",
-                        interactive=True,
-                    )
+            #         save_trace_path = gr.Textbox(
+            #             label="Trace Path",
+            #             placeholder="e.g. ./tmp/traces",
+            #             value=config['save_trace_path'],
+            #             info="Path to save Agent traces",
+            #             interactive=True,
+            #         )
 
-                    save_agent_history_path = gr.Textbox(
-                        label="Agent History Save Path",
-                        placeholder="e.g., ./tmp/agent_history",
-                        value=config['save_agent_history_path'],
-                        info="Specify the directory where agent history should be saved.",
-                        interactive=True,
-                    )
+            #         save_agent_history_path = gr.Textbox(
+            #             label="Agent History Save Path",
+            #             placeholder="e.g., ./tmp/agent_history",
+            #             value=config['save_agent_history_path'],
+            #             info="Specify the directory where agent history should be saved.",
+            #             interactive=True,
+            #         )
 
             with gr.TabItem("🤖 Run Agent", id=4):
                 task = gr.Textbox(
@@ -962,170 +962,171 @@ def create_ui(config, theme_name="Ocean"):
                 markdown_download = gr.File(label="Download Research Report")
 
 
-            with gr.TabItem("📊 Results", id=6):
-                with gr.Group():
+            # with gr.TabItem("📊 Results", id=6):
+            #     with gr.Group():
 
-                    recording_display = gr.Video(label="Latest Recording")
+            #         recording_display = gr.Video(label="Latest Recording")
 
-                    gr.Markdown("### Results")
-                    with gr.Row():
-                        with gr.Column():
-                            final_result_output = gr.Textbox(
-                                label="Final Result", lines=3, show_label=True
-                            )
-                        with gr.Column():
-                            errors_output = gr.Textbox(
-                                label="Errors", lines=3, show_label=True
-                            )
-                    with gr.Row():
-                        with gr.Column():
-                            model_actions_output = gr.Textbox(
-                                label="Model Actions", lines=3, show_label=True
-                            )
-                        with gr.Column():
-                            model_thoughts_output = gr.Textbox(
-                                label="Model Thoughts", lines=3, show_label=True
-                            )
+            #         gr.Markdown("### Results")
+            #         with gr.Row():
+            #             with gr.Column():
+            #                 final_result_output = gr.Textbox(
+            #                     label="Final Result", lines=3, show_label=True
+            #                 )
+            #             with gr.Column():
+            #                 errors_output = gr.Textbox(
+            #                     label="Errors", lines=3, show_label=True
+            #                 )
+            #         with gr.Row():
+            #             with gr.Column():
+            #                 model_actions_output = gr.Textbox(
+            #                     label="Model Actions", lines=3, show_label=True
+            #                 )
+            #             with gr.Column():
+            #                 model_thoughts_output = gr.Textbox(
+            #                     label="Model Thoughts", lines=3, show_label=True
+            #                 )
 
-                    trace_file = gr.File(label="Trace File")
+            #         trace_file = gr.File(label="Trace File")
 
-                    agent_history_file = gr.File(label="Agent History")
+            #         agent_history_file = gr.File(label="Agent History")
 
-                # Bind the stop button click event after errors_output is defined
-                stop_button.click(
-                    fn=stop_agent,
-                    inputs=[],
-                    outputs=[errors_output, stop_button, run_button],
-                )
+            #     # Bind the stop button click event after errors_output is defined
+            #     stop_button.click(
+            #         fn=stop_agent,
+            #         inputs=[],
+            #         outputs=[errors_output, stop_button, run_button],
+            #     )
 
-                # Run button click handler
-                run_button.click(
-                    fn=run_with_stream,
-                        inputs=[
-                            agent_type, llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
-                            use_own_browser, keep_browser_open, headless, disable_security, window_w, window_h,
-                            save_recording_path, save_agent_history_path, save_trace_path,  # Include the new path
-                            enable_recording, task, add_infos, max_steps, use_vision, max_actions_per_step, tool_calling_method, chrome_cdp
-                        ],
-                    outputs=[
-                        browser_view,           # Browser view
-                        final_result_output,    # Final result
-                        errors_output,          # Errors
-                        model_actions_output,   # Model actions
-                        model_thoughts_output,  # Model thoughts
-                        recording_display,      # Latest recording
-                        trace_file,             # Trace file
-                        agent_history_file,     # Agent history file
-                        stop_button,            # Stop button
-                        run_button              # Run button
-                    ],
-                )
+            #     # Run button click handler
+            #     run_button.click(
+            #         fn=run_with_stream,
+            #             inputs=[
+            #                 agent_type, llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
+            #                 use_own_browser, keep_browser_open, headless, disable_security, window_w, window_h,
+            #                 save_recording_path, save_agent_history_path, save_trace_path,  # Include the new path
+            #                 enable_recording, task, add_infos, max_steps, use_vision, max_actions_per_step, tool_calling_method, chrome_cdp
+            #             ],
+            #         outputs=[
+            #             browser_view,           # Browser view
+            #             final_result_output,    # Final result
+            #             errors_output,          # Errors
+            #             model_actions_output,   # Model actions
+            #             model_thoughts_output,  # Model thoughts
+            #             recording_display,      # Latest recording
+            #             trace_file,             # Trace file
+            #             agent_history_file,     # Agent history file
+            #             stop_button,            # Stop button
+            #             run_button              # Run button
+            #         ],
+            #     )
                 
-                # Run Deep Research
-                research_button.click(
-                        fn=run_deep_search,
-                        inputs=[research_task_input, max_search_iteration_input, max_query_per_iter_input, llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key, use_vision, use_own_browser, headless, chrome_cdp],
-                        outputs=[markdown_output_display, markdown_download, stop_research_button, research_button]
-                )
-                # Bind the stop button click event after errors_output is defined
-                stop_research_button.click(
-                    fn=stop_research_agent,
-                    inputs=[],
-                    outputs=[stop_research_button, research_button],
-                )
+            #     # Run Deep Research
+            #     research_button.click(
+            #             fn=run_deep_search,
+            #             inputs=[research_task_input, max_search_iteration_input, max_query_per_iter_input, llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key, use_vision, use_own_browser, headless, chrome_cdp],
+            #             outputs=[markdown_output_display, markdown_download, stop_research_button, research_button]
+            #     )
+            #     # Bind the stop button click event after errors_output is defined
+            #     stop_research_button.click(
+            #         fn=stop_research_agent,
+            #         inputs=[],
+            #         outputs=[stop_research_button, research_button],
+            #     )
 
-            with gr.TabItem("🎥 Recordings", id=7):
-                def list_recordings(save_recording_path):
-                    if not os.path.exists(save_recording_path):
-                        return []
+            # with gr.TabItem("🎥 Recordings", id=7):
+            #     def list_recordings(save_recording_path):
+            #         if not os.path.exists(save_recording_path):
+            #             return []
 
-                    # Get all video files
-                    recordings = glob.glob(os.path.join(save_recording_path, "*.[mM][pP]4")) + glob.glob(os.path.join(save_recording_path, "*.[wW][eE][bB][mM]"))
+            #         # Get all video files
+            #         recordings = glob.glob(os.path.join(save_recording_path, "*.[mM][pP]4")) + glob.glob(os.path.join(save_recording_path, "*.[wW][eE][bB][mM]"))
 
-                    # Sort recordings by creation time (oldest first)
-                    recordings.sort(key=os.path.getctime)
+            #         # Sort recordings by creation time (oldest first)
+            #         recordings.sort(key=os.path.getctime)
 
-                    # Add numbering to the recordings
-                    numbered_recordings = []
-                    for idx, recording in enumerate(recordings, start=1):
-                        filename = os.path.basename(recording)
-                        numbered_recordings.append((recording, f"{idx}. {filename}"))
+            #         # Add numbering to the recordings
+            #         numbered_recordings = []
+            #         for idx, recording in enumerate(recordings, start=1):
+            #             filename = os.path.basename(recording)
+            #             numbered_recordings.append((recording, f"{idx}. {filename}"))
 
-                    return numbered_recordings
+            #         return numbered_recordings
 
-                recordings_gallery = gr.Gallery(
-                    label="Recordings",
-                    value=list_recordings(config['save_recording_path']),
-                    columns=3,
-                    height="auto",
-                    object_fit="contain"
-                )
+            #     recordings_gallery = gr.Gallery(
+            #         label="Recordings",
+            #         value=list_recordings(config['save_recording_path']),
+            #         columns=3,
+            #         height="auto",
+            #         object_fit="contain"
+            #     )
 
-                refresh_button = gr.Button("🔄 Refresh Recordings", variant="secondary")
-                refresh_button.click(
-                    fn=list_recordings,
-                    inputs=save_recording_path,
-                    outputs=recordings_gallery
-                )
+            #     refresh_button = gr.Button("🔄 Refresh Recordings", variant="secondary")
+            #     refresh_button.click(
+            #         fn=list_recordings,
+            #         inputs=save_recording_path,
+            #         outputs=recordings_gallery
+            #     )
             
-            with gr.TabItem("📁 Configuration", id=8):
-                with gr.Group():
-                    config_file_input = gr.File(
-                        label="Load Config File",
-                        file_types=[".pkl"],
-                        interactive=True
-                    )
+            # with gr.TabItem("📁 Configuration", id=8):
+            #     with gr.Group():
+            #         config_file_input = gr.File(
+            #             label="Load Config File",
+            #             file_types=[".pkl"],
+            #             interactive=True
+            #         )
 
-                    load_config_button = gr.Button("Load Existing Config From File", variant="primary")
-                    save_config_button = gr.Button("Save Current Config", variant="primary")
+            #         load_config_button = gr.Button("Load Existing Config From File", variant="primary")
+            #         save_config_button = gr.Button("Save Current Config", variant="primary")
 
-                    config_status = gr.Textbox(
-                        label="Status",
-                        lines=2,
-                        interactive=False
-                    )
+            #         config_status = gr.Textbox(
+            #             label="Status",
+            #             lines=2,
+            #             interactive=False
+            #         )
 
-                load_config_button.click(
-                    fn=update_ui_from_config,
-                    inputs=[config_file_input],
-                    outputs=[
-                        agent_type, max_steps, max_actions_per_step, use_vision, tool_calling_method,
-                        llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
-                        use_own_browser, keep_browser_open, headless, disable_security, enable_recording,
-                        window_w, window_h, save_recording_path, save_trace_path, save_agent_history_path,
-                        task, config_status
-                    ]
-                )
+            #     load_config_button.click(
+            #         fn=update_ui_from_config,
+            #         inputs=[config_file_input],
+            #         outputs=[
+            #             agent_type, max_steps, max_actions_per_step, use_vision, tool_calling_method,
+            #             llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
+            #             use_own_browser, keep_browser_open, headless, disable_security, enable_recording,
+            #             window_w, window_h, save_recording_path, save_trace_path, save_agent_history_path,
+            #             task, config_status
+            #         ]
+            #     )
 
-                save_config_button.click(
-                    fn=save_current_config,
-                    inputs=[
-                        agent_type, max_steps, max_actions_per_step, use_vision, tool_calling_method,
-                        llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
-                        use_own_browser, keep_browser_open, headless, disable_security,
-                        enable_recording, window_w, window_h, save_recording_path, save_trace_path,
-                        save_agent_history_path, task,
-                    ],  
-                    outputs=[config_status]
-                )
+            #     save_config_button.click(
+            #         fn=save_current_config,
+            #         inputs=[
+            #             agent_type, max_steps, max_actions_per_step, use_vision, tool_calling_method,
+            #             llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
+            #             use_own_browser, keep_browser_open, headless, disable_security,
+            #             enable_recording, window_w, window_h, save_recording_path, save_trace_path,
+            #             save_agent_history_path, task,
+            #         ],  
+            #         outputs=[config_status]
+            #     )
 
 
         # Attach the callback to the LLM provider dropdown
         llm_provider.change(
             lambda provider, api_key, base_url: update_model_dropdown(provider, api_key, base_url),
-            inputs=[llm_provider, llm_api_key, llm_base_url],
+            # inputs=[llm_provider, llm_api_key, llm_base_url],
+            inputs=[llm_provider],
             outputs=llm_model_name
         )
 
         # Add this after defining the components
-        enable_recording.change(
-            lambda enabled: gr.update(interactive=enabled),
-            inputs=enable_recording,
-            outputs=save_recording_path
-        )
+        # enable_recording.change(
+        #     lambda enabled: gr.update(interactive=enabled),
+        #     inputs=enable_recording,
+        #     outputs=save_recording_path
+        # )
 
-        use_own_browser.change(fn=close_global_browser)
-        keep_browser_open.change(fn=close_global_browser)
+        # use_own_browser.change(fn=close_global_browser)
+        # keep_browser_open.change(fn=close_global_browser)
 
     return demo
 
