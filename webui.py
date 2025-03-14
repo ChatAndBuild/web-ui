@@ -1140,7 +1140,7 @@ def main():
     config_dict = default_config()
 
     demo = create_ui(config_dict, theme_name=args.theme)
-    demo.launch(server_name=args.ip, server_port=args.port, favicon_path="./assets/favicon.svg")
+    demo.launch(server_name=args.ip, server_port=args.port, favicon_path="./assets/logo.png")
 
 if __name__ == '__main__':
     main()
