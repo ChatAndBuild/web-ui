@@ -768,7 +768,8 @@ def create_ui(config, theme_name="Ocean"):
                         step=1,
                         label="Max Context Length",
                         info="Controls max context length model needs to handle (less = faster)",
-                        visible=config['llm_provider'] == "ollama"
+                        # visible=config['llm_provider'] == "ollama"
+                        visible=False,
                     )
                     llm_temperature = gr.Slider(
                         minimum=0.0,
@@ -776,9 +777,10 @@ def create_ui(config, theme_name="Ocean"):
                         value=config['llm_temperature'],
                         step=0.1,
                         label="Temperature",
-                        info="Controls randomness in model outputs"
+                        info="Controls randomness in model outputs",
+                        visible=False,
                     )
-                    with gr.Row():
+                    with gr.Row(visible=False):
                         llm_base_url = gr.Textbox(
                             label="Base URL",
                             value=config['llm_base_url'],
