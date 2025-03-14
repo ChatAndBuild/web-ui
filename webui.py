@@ -655,16 +655,25 @@ async def run_with_stream(
                 gr.update(interactive=True)    # Re-enable run button
             ]
 
+
+theme = gr.themes.Origin(
+    primary_hue="zinc",
+    secondary_hue="purple",
+    neutral_hue="neutral",
+    font=[gr.themes.GoogleFont('Nunito'), 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    font_mono=[gr.themes.GoogleFont('Domine'), 'ui-monospace', 'Consolas', 'monospace'],
+)
+
 # Define the theme map globally
 theme_map = {
-    "Default": Default(),
+    "Default": theme,
     "Soft": Soft(),
     "Monochrome": Monochrome(),
     "Glass": Glass(),
     "Origin": Origin(),
     "Citrus": Citrus(),
     "Ocean": Ocean(),
-    "Base": Base()
+    "Base": Base(),
 }
 
 async def close_global_browser():
@@ -724,12 +733,12 @@ def create_ui(config, theme_name="Ocean"):
     """
 
     with gr.Blocks(
-            title="Browser Use WebUI", theme=theme_map[theme_name], css=css
+            title="Pivotal", theme=theme_map[theme_name], css=css
     ) as demo:
         with gr.Row():
             gr.Markdown(
                 """
-                # 🌐 Browser Use WebUI
+                # Pivotal
                 ### Control your browser with AI assistance
                 """,
                 elem_classes=["header-text"],
@@ -1124,14 +1133,14 @@ def main():
     parser = argparse.ArgumentParser(description="Gradio UI for Browser Agent")
     parser.add_argument("--ip", type=str, default="127.0.0.1", help="IP address to bind to")
     parser.add_argument("--port", type=int, default=7788, help="Port to listen on")
-    parser.add_argument("--theme", type=str, default="Ocean", choices=theme_map.keys(), help="Theme to use for the UI")
-    parser.add_argument("--dark-mode", action="store_true", help="Enable dark mode")
+    parser.add_argument("--theme", type=str, default="Default", choices=theme_map.keys(), help="Theme to use for the UI")
+    parser.add_argument("--light-mode", action="store_true", help="Enable light mode")
     args = parser.parse_args()
 
     config_dict = default_config()
 
     demo = create_ui(config_dict, theme_name=args.theme)
-    demo.launch(server_name=args.ip, server_port=args.port)
+    demo.launch(server_name=args.ip, server_port=args.port, favicon_path="./assets/favicon.svg")
 
 if __name__ == '__main__':
     main()
