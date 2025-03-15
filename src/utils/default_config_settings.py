@@ -19,7 +19,7 @@ def default_config():
         "llm_base_url": "",
         "llm_api_key": "",
         "use_own_browser": os.getenv("CHROME_PERSISTENT_SESSION", "false").lower() == "true",
-        "keep_browser_open": True,
+        "keep_browser_open": False,
         "headless": True,
         "disable_security": True,
         "enable_recording": False,
